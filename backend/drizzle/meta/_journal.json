@@ -8,6 +8,20 @@
       "when": 1780228109895,
       "tag": "0000_mighty_lyja",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1780230553180,
+      "tag": "0001_daffy_polaris",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780234223363,
+      "tag": "0002_material_annihilus",
+      "breakpoints": true
     }
   ]
 }

@@ -28,5 +28,5 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*", "drizzle.config.ts"],
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts", "drizzle"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }
