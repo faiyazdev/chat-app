@@ -25,39 +25,6 @@ The application is split into two clean packages:
 
 ---
 
-## 🛠️ Architecture & Data Flow
-
-NexusChat manages real-time messaging through an event-based publish-subscribe flow:
-
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Client A as User: Alice
-    actor Client B as User: Bob
-    participant Server as Socket.io Server (Node.js)
-
-    Note over Client A, Server: Room Setup (Room ID: "dev-room")
-    Client A->>Server: emit("join_room", { username: "Alice", roomId: "dev-room" })
-    Server-->>Server: Add Alice to room state
-    Server->>Client A: join("dev-room")
-    Server->>Server: Fetch active users in room
-    Server-->>Client A: emit("room_users", usersList)
-    Server-->>Client A: emit("receive_message", { sender: "System", text: "Alice joined..." })
-
-    Note over Client B, Server: Bob joins later
-    Client B->>Server: emit("join_room", { username: "Bob", roomId: "dev-room" })
-    Server->>Server: Add Bob to room state
-    Server->>Client B: join("dev-room")
-    Server-->>dev-room: emit("room_users", updatedUsersList)
-    Server-->>dev-room: emit("receive_message", { sender: "System", text: "Bob joined..." })
-
-    Note over Client A, Client B: Real-Time Chatting
-    Client A->>Server: emit("chatMessage", { sender: "Alice", text: "Hello team!", roomId: "dev-room" })
-    Server-->>dev-room: emit("receive_message", { sender: "Alice", text: "Hello team!", roomId: "dev-room" })
-```
-
----
-
 ## ✨ Features
 
 - 🌐 **Dynamic Room Routing**: Create or join any room dynamically by simply entering a custom Room ID.
