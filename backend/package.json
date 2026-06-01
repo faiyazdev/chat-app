@@ -14,6 +14,7 @@
     "db:seed": "tsx ./src/db/seed.ts"
   },
   "dependencies": {
+    "@clerk/express": "^2.1.22",
     "@neondatabase/serverless": "^1.1.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
