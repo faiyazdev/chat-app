@@ -1,4 +1,7 @@
+import { clerkClient } from "@clerk/express";
 import { Request, Response } from "express";
+import db from "../db/index.js";
+import { usersTable } from "../db/schema.js";
 
 /**
  * Handle listing all users
@@ -12,21 +15,32 @@ export const getUsers = (req: Request, res: Response): void => {
 /**
  * Handle user registration
  */
-export const registerUser = (req: Request, res: Response): void => {
-  const { username, email } = req.body;
+export const registerUser = async (req: Request, res: Response) => {
+  const { clerkId } = req.user;
 
-  if (!username || !email) {
-    res.status(400).json({
-      status: "error",
-      message: "Username and email are required",
-    });
-    return;
-  }
-
+  const user = await clerkClient.users.getUser(clerkId!);
   // Create the user in memory
+
+  try {
+    const newUser = await db.insert(usersTable).values({
+      name: user.firstName + " " + user.lastName,
+      email: user.emailAddresses[0].emailAddress,
+      profilePicture: user.imageUrl,
+      clerkUserId: user.id,
+    });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    return res.status(500).json({
+      status: "error",
+      message: "Failed to register user",
+    });
+  }
 
   res.status(201).json({
     status: "success",
     message: "User registered successfully",
+    data: {
+      user,
+    },
   });
 };
