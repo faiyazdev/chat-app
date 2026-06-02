@@ -1,5 +1,6 @@
 import express from "express";
 import usersRoutes from "./routes/userRoutes.js";
+import webhooksRoutes from "./routes/webhookRoutes.js";
 import cors from "cors";
 import { clerkMiddleware } from "@clerk/express";
 
@@ -16,5 +17,6 @@ app.use(
 
 // Register routes
 app.use("/api/v1/users", usersRoutes);
+app.use("/api/v1/webhooks", webhooksRoutes);
 
 export default app;
