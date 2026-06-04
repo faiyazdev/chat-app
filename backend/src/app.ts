@@ -3,6 +3,7 @@ import usersRoutes from "./routes/userRoutes.js";
 import webhooksRoutes from "./routes/webhookRoutes.js";
 import { clerkMiddleware } from "@clerk/express";
 import path from "path";
+import { fileURLToPath } from "url";
 import { env } from "./config/env.js";
 
 const app = express();
@@ -16,7 +17,11 @@ app.use("/api/v1/users", usersRoutes);
 app.use("/api/v1/webhooks", webhooksRoutes);
 
 if (env.NODE_ENV === "production") {
-  const frontendPath = path.join(process.cwd(), "frontend", "dist");
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+  // Compiled file is at backend/dist/src/app.js, so we need to go up three levels
+  // (src -> dist -> backend -> root) to find frontend/dist
+  const frontendPath = path.resolve(__dirname, "../../../frontend/dist");
   app.use(express.static(frontendPath));
   app.get("*", (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
