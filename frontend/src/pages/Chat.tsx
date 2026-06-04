@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { io, Socket } from "socket.io-client";
-const SOCKET_SERVER_URL = "http://localhost:3000"; // Adjust if your server runs on a different port
+const SOCKET_SERVER_URL =
+  import.meta.env.MODE === "production" ? "/" : "http://localhost:3000";
 
 interface Message {
   id: string;
