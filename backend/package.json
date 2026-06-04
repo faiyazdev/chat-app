@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "SOCKET.IO BACKEND",
   "type": "module",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "dev": "tsx watch src/index.ts",
     "db:push": "drizzle-kit push",
     "db:generate": "drizzle-kit generate",
