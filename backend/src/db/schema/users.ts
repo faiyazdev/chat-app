@@ -1,5 +1,7 @@
+import { relations } from "drizzle-orm";
 import { pgTable, text, varchar } from "drizzle-orm/pg-core";
 import { createdAt, deletedAt, id, updatedAt } from "../schemaHelper.js";
+import { messagesTable } from "./messages.js";
 
 export const usersTable = pgTable("users", {
   id,
@@ -12,5 +14,11 @@ export const usersTable = pgTable("users", {
   deletedAt,
 });
 
+export const usersRelations = relations(usersTable, ({ many }) => ({
+  sentMessages: many(messagesTable, { relationName: "sentMessages" }),
+  receivedMessages: many(messagesTable, { relationName: "receivedMessages" }),
+}));
+
 export type UserInsert = typeof usersTable.$inferInsert;
 export type UserSelect = typeof usersTable.$inferSelect;
+
