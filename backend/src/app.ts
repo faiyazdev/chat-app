@@ -1,6 +1,7 @@
 import express from "express";
-import usersRoutes from "./routes/userRoutes.js";
-import webhooksRoutes from "./routes/webhookRoutes.js";
+import usersRoutes from "./routes/user.route.js";
+import messagesRoutes from "./routes/message.route.js";
+import webhooksRoutes from "./routes/webhook.route.js";
 import { clerkMiddleware } from "@clerk/express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -14,6 +15,7 @@ app.use(clerkMiddleware());
 
 // Register routes
 app.use("/api/v1/users", usersRoutes);
+app.use("/api/v1/messages", messagesRoutes);
 app.use("/api/v1/webhooks", webhooksRoutes);
 
 if (env.NODE_ENV === "production") {

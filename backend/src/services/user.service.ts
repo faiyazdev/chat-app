@@ -43,3 +43,11 @@ export const upsertUser = async ({
 export const deleteUserByClerkId = async (clerkUserId: string) => {
   await db.delete(usersTable).where(eq(usersTable.clerkUserId, clerkUserId));
 };
+
+export const getUserIdByClerkId = async (clerkUserId: string) => {
+  const user = await db.query.usersTable.findFirst({
+    where: eq(usersTable.clerkUserId, clerkUserId),
+  });
+  if (!user?.id) throw new Error("User not found");
+  return user?.id;
+};

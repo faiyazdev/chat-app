@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { verifyWebhook } from "@clerk/express/webhooks";
-import { deleteUserByClerkId, upsertUser } from "../services/users.js";
+import { deleteUserByClerkId, upsertUser } from "../services/user.service.js";
 
 export const clerkWebhook = async (req: Request, res: Response) => {
   try {
