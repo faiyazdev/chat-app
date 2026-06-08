@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
-import { getUserIdByClerkId } from "../services/user.service.js";
+import { getUserIdByClerkId, getUsers } from "../services/user.service.js";
 
-export const handleGetUsers = (req: Request, res: Response): void => {
+export const handleGetUsers = async (req: Request, res: Response) => {
+  const users = await getUsers(req.user.clerkId!);
   res.json({
     status: "success",
+    data: {
+      users,
+    },
   });
 };
 export const handleGetUserIdByClerkId = async (req: Request, res: Response) => {

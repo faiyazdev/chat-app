@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, ne } from "drizzle-orm";
 import db from "../db/index.js";
 import { usersTable } from "../db/schema.js";
 
@@ -42,6 +42,12 @@ export const upsertUser = async ({
 
 export const deleteUserByClerkId = async (clerkUserId: string) => {
   await db.delete(usersTable).where(eq(usersTable.clerkUserId, clerkUserId));
+};
+export const getUsers = async (currentUserId: string) => {
+  // get all users except the current user
+  return await db.query.usersTable.findMany({
+    where: ne(usersTable.clerkUserId, currentUserId),
+  });
 };
 
 export const getUserIdByClerkId = async (clerkUserId: string) => {
