@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import axiosInstance from "../lib/axios";
 
 interface ChatStore {
   selectedUserId: string | null;
@@ -10,15 +11,8 @@ export const useChatStore = create<ChatStore>((set) => ({
   selectedUserId: null,
   setSelectedUserId: (userId) => set({ selectedUserId: userId }),
   getUsers: () => {
-    // Implementation for fetching users
-    fetch(`http://localhost:3000/api/users`)
-      .then((response) => response.json())
-      .then((data) => {
-        // Handle the fetched users data
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
-      });
+    axiosInstance.get("/users").then((response) => {
+      console.log("Users:", response.data);
+    });
   },
 }));
