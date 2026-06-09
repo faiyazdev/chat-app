@@ -14,7 +14,7 @@ export const requireAuth = (
     });
   }
 
-  req.user.clerkId = clerkId;
+  req.clerkId = clerkId;
 
   next();
 };

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { getUserIdByClerkId, getUsers } from "../services/user.service.js";
 
 export const handleGetUsers = async (req: Request, res: Response) => {
-  const users = await getUsers(req.user.clerkId!);
+  const users = await getUsers(req.clerkId!);
   res.json({
     status: "success",
     data: {
