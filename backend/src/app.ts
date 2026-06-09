@@ -6,12 +6,18 @@ import { clerkMiddleware } from "@clerk/express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { env } from "./config/env.js";
+import cors from "cors";
 
 const app = express();
 
 // Apply middlewares
 app.use(express.json());
 app.use(clerkMiddleware());
+app.use(
+  cors({
+    origin: env.NODE_ENV === "development" ? "http://localhost:5173" : "/",
+  }),
+);
 
 // Register routes
 app.use("/api/v1/users", usersRoutes);
