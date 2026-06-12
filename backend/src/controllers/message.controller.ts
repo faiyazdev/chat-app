@@ -9,7 +9,7 @@ export const handleGetMessagesBetweenTwoUsers = async (
   req: Request,
   res: Response,
 ) => {
-  const currentUserId = await getUserIdByClerkId(req.user?.clerkId!);
+  const currentUserId = await getUserIdByClerkId(req.clerkId!);
   const otherUserId = await getUserIdByClerkId(req.params.clerkUserId);
   const messages = await getMessagesBetweenTwoUsers(currentUserId, otherUserId);
 
@@ -22,7 +22,8 @@ export const handleGetMessagesBetweenTwoUsers = async (
 };
 
 export const handleCreateMessage = async (req: Request, res: Response) => {
-  const senderId = await getUserIdByClerkId(req.user?.clerkId!);
+  console.log(req.clerkId, req.params.clerkUserId);
+  const senderId = await getUserIdByClerkId(req.clerkId!);
   const receiverId = await getUserIdByClerkId(req.params.clerkUserId);
   const { text, image } = req.body;
 
