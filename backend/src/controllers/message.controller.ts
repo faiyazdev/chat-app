@@ -22,12 +22,12 @@ export const handleGetMessagesBetweenTwoUsers = async (
 };
 
 export const handleCreateMessage = async (req: Request, res: Response) => {
-  console.log(req.clerkId, req.params.clerkUserId);
   const senderId = await getUserIdByClerkId(req.clerkId!);
   const receiverId = await getUserIdByClerkId(req.params.clerkUserId);
+  console.log(senderId, receiverId);
   const { text, image } = req.body;
 
-  const newMessage = createMessage({ senderId, receiverId, text, image });
+  const newMessage = await createMessage({ senderId, receiverId, text, image });
   res.status(201).json({
     status: "success",
     data: {
