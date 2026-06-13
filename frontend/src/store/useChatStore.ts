@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import axiosInstance from "../lib/axios";
+import { io, Socket } from "socket.io-client";
 
 interface ChatStore {
   selectedUserId: string | null;
@@ -24,6 +25,9 @@ interface ChatStore {
   getUsers: () => void;
   getMessages: (selectedUserId: string | null) => void;
   createMessage: (text: string) => void;
+  socket: Socket | null;
+  connectSocket: () => void;
+  disconnectSocket: () => void;
 }
 
 export const useChatStore = create<ChatStore>((set, get) => ({
@@ -72,6 +76,23 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       }
     } catch (error) {
       console.error("Error creating message:", error);
+    }
+  },
+  socket: null,
+  connectSocket: () => {
+    if (!get().socket || !get().socket?.connected) {
+      const socket = io("http://localhost:3000");
+      socket.on("connect", () => {
+        console.log("Connected to socket server with ID:", socket.id);
+      });
+      set({ socket });
+    }
+  },
+  disconnectSocket: () => {
+    const { socket } = get();
+    if (socket) {
+      socket.close();
+      set({ socket: null });
     }
   },
 }));
