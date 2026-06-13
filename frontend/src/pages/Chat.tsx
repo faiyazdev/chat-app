@@ -15,13 +15,21 @@ export default function Chat() {
     isUsersLoading,
     selectedUserId,
     createMessage,
+    getMessages,
+    getUsers,
   } = useChatStore((state) => state);
   const { user: currentUser } = useUser();
 
   useEffect(() => {
-    useChatStore.getState().getUsers();
-    useChatStore.getState().getMessages();
-  }, []);
+    if (selectedUserId) {
+      getMessages(selectedUserId);
+    }
+  }, [selectedUserId, getMessages]);
+
+  useEffect(() => {
+    getUsers();
+  }, [getUsers]);
+
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -56,7 +64,9 @@ export default function Chat() {
                     className={`member-item ${
                       isCurrentUser ? "current-user" : ""
                     }`}
-                    onClick={() => setSelectedUserId(user.id)}
+                    onClick={() => {
+                      setSelectedUserId(user.clerkUserId);
+                    }}
                   >
                     <div className="member-avatar-wrapper">
                       <div className="member-avatar">
@@ -99,27 +109,20 @@ export default function Chat() {
             <div className="messages-log">
               {messages?.map((msg) => {
                 console.log(msg);
-                const isMe = msg.senderId === currentUser?.id;
+                const isMe = msg.senderClerkId === currentUser?.id;
                 return (
                   <div
                     key={msg.id}
                     className={`message-row ${isMe ? "message-mine" : "message-others"}`}
                   >
-                    <div className="message-avatar">
-                      {msg.senderId.charAt(0).toUpperCase()}
-                    </div>
-
                     <div className="message-content-wrapper">
                       <div className="message-meta">
                         <span className="sender-name">
-                          {isMe ? "You" : msg.senderId}
-                        </span>
-                        <span className="message-time">
-                          {msg.createdAt?.toLocaleTimeString()}
+                          {isMe ? "You" : msg.senderName}
                         </span>
                       </div>
 
-                      <div className="message-bubble">
+                      <div className="text-white">
                         <p>{msg.text}</p>
                       </div>
                     </div>

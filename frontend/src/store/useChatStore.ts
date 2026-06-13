@@ -18,9 +18,11 @@ interface ChatStore {
     receiverId: string;
     text: string;
     createdAt?: Date | undefined;
+    senderClerkId: string;
+    senderName: string;
   }[];
   getUsers: () => void;
-  getMessages: () => void;
+  getMessages: (selectedUserId: string | null) => void;
   createMessage: (text: string) => void;
 }
 
@@ -40,17 +42,16 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       console.error("Error fetching users:", error);
     }
   },
-  getMessages: () => {
+  getMessages: (selectedUserId: string | null) => {
     try {
-      const { selectedUserId } = get();
       set({ isMessagesLoading: true });
-      if (selectedUserId) {
-        axiosInstance
-          .get(`/messages/chat/targetUser/${selectedUserId}`)
-          .then((response) => {
-            set({ messages: response.data.data.messages });
-          });
-      }
+
+      axiosInstance
+        .get(`/messages/chat/targetUser/${selectedUserId}`)
+        .then((response) => {
+          console.log(response.data.data.messages);
+          set({ messages: response.data.data.messages });
+        });
     } catch (error) {
       console.error("Error fetching messages:", error);
     } finally {
